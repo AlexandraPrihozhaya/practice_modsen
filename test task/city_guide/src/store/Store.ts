@@ -16,27 +16,27 @@ export default class Store {
     this.isAuth = bool;
   }
 
-  async login(login: string, pass: string) {
+  async login(email: string, pass: string) {
     try {
-      if (login.length >= 4 && login.length) {
+      if (pass.length >= 4 && pass.length) {
         localStorage.setItem("auth", "true");
         this.setIsLoading(true);
         this.setIsAuth(true);
       }
     } catch (error) {
-      console.error("Ошибка, ", error);
+      console.error("Ошибка авторизации ", error);
     }
   }
 
-  async registration(login: string, pass: string, passSecond: string) {
+  async registration(email: string, pass: string, passCheck: string) {
     try {
-      if (login.length >= 4 && login.length && pass === passSecond) {
+      if (pass.length >= 4 && pass.length && pass === passCheck && /\S+@\S+\.\S+/.test(email)) {
         localStorage.setItem("auth", "true");
         this.setIsLoading(true);
         this.setIsAuth(true);
       }
     } catch (error) {
-      console.error("Ошибка, ", error);
+      console.error("Ошибка регистрации ", error);
     }
   }
 
@@ -46,7 +46,7 @@ export default class Store {
       this.setIsLoading(true);
       this.setIsAuth(false);
     } catch (error) {
-      console.error("Ошибка, ", error);
+      console.error("Ошибка выхода ", error);
     }
   }
 }
