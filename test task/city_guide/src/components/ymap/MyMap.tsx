@@ -15,19 +15,21 @@ const MyMap = () => {
     const [userLocation, setUserLocation] = useState({});
 
     useEffect(() => {
-        getUserLocation();
-    }, [])
-
-    useEffect(() => {
+    if (searchAddress) {
         getCoordinates();
-      }, [searchAddress]);
+    } else {
+        getUserLocation();
+    }
+    }, [searchAddress]);
 
     const getCoordinates = async () => {
         try {
-          const response = await fetch(`https://geocode-maps.yandex.ru/1.x/?apikey=e5c73b1e-041d-49f0-b6d3-c96913f230d3&format=json&geocode=${searchAddress}`);
-          const data = await response.json();
-          const coordinates = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
-          setUserLocation([parseFloat(coordinates[1]), parseFloat(coordinates[0])]);
+            if (searchAddress) {
+                const response = await fetch(`https://geocode-maps.yandex.ru/1.x/?apikey=e5c73b1e-041d-49f0-b6d3-c96913f230d3&format=json&geocode=${searchAddress}`);
+                const data = await response.json();
+                const coordinates = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
+                setUserLocation([parseFloat(coordinates[1]), parseFloat(coordinates[0])]);
+            }
         } catch (error) {
           console.error('Error getting coordinates:', error);
         }
@@ -59,17 +61,14 @@ const MyMap = () => {
                     center: userLocation,
                     zoom: 16,
                     on: {
-                      userLocationChange: (event) => {
+                        userLocationChange: (event) => {
                         // @ts-expect-error TS(2532): Object is possibly 'undefined'.
-                        this.setState({ center: event.value });
-                      },
+                            this.setState({ center: event.value });
+                        },
                     },
-                  }}
-                  // @ts-expect-error TS(2322): Type '{ width: string; height: string; position: s... Remove this comment to see the full error message
-                  style={containerStyle}  
-                >
-
-
+                }}
+                // @ts-expect-error TS(2322): Type '{ width: string; height: string; position: s... Remove this comment to see the full error message
+                    style={containerStyle} >
 
                 {userLocation && (
                     <Placemark
