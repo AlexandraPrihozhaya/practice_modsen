@@ -6,6 +6,7 @@ import {
   SSearch, SSearchIcon, SButtonSearch, SButtonFav
 } from "./styled";
 import { AppContext } from '../provider/AppProvider';
+import BtnAccount from '../btnAccount/BtnAccount';
 
 function SideBarMenu() {
   const [isSidebarOpenSearch, setIsSidebarOpenSearch] = useState(false);
@@ -74,6 +75,8 @@ function SideBarMenu() {
           </SButtonFav>
 
         </div>
+
+        <BtnAccount />
       </Sidebar>
 
       <div className={`sidebar-2 ${isSidebarOpenSearch ? 'open' : ''}`}>
@@ -110,6 +113,7 @@ function SideBarMenu() {
           <IoMdArrowDropleft />
         </button>
       </div>
+      
     </div>
   );
 }
