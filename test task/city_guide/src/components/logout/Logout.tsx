@@ -1,13 +1,16 @@
 import React, { useContext } from "react"
 //import { AuthContext } from "./AuthProvider"
 import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../../hooks/useAuth"
 
 const Logout = () => {
-  //const auth = useContext(AuthContext)
+
   const navigate = useNavigate()
+  const { logout } = useAuth();
+
 
   const handleLogout = () => {
-    //auth.handleLogout()
+    logout();
     navigate("/", { state: { message: " You have been logged out!" } })
   }
 
