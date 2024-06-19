@@ -2,16 +2,16 @@ import styled from "styled-components";
 
 export const SSearch = styled.div`
     background: rgba(250,250,250,.3);
-    border: 2px solid #C4C4C4;
-    border-radius: 6px;
+    border: 3px solid #C4C4C4;
+    border-radius: 10px;
+    width: 280px;
+    height: 40px;
     input {
-        border-radius: 6px;
+        border-radius: 10px;
         padding: 0 16px;
         font-family: inherit;
         letter-spacing: inherit;
         font-size: 16px;
-        width: 190px;
-        height: 40px;
         outline: none;
         border: none;
         color: inherit;

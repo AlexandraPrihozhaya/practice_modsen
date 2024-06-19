@@ -1,11 +1,11 @@
 import { Sidebar } from 'flowbite-react';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
-import { MdOutlineFavorite } from "react-icons/md";
-import { IoMdArrowDropleft } from "react-icons/io";
+import { IoMdArrowDropleft, IoMdBookmark } from "react-icons/io";
 import {
   SSearch, SSearchIcon, SButtonSearch, SButtonFav
 } from "./styled";
+import { AppContext } from '../provider/AppProvider.js';
 
 function SideBarMenu() {
   const [isSidebarOpenSearch, setIsSidebarOpenSearch] = useState(false);
@@ -34,9 +34,23 @@ function SideBarMenu() {
     }
   };
 
+  const { searchAddress, setSearchAddress } = useContext(AppContext);
+  const { radius, setRadius } = useContext(AppContext);
+
+
+  const handleInputChange = (e) => {
+    setSearchAddress(e.target.value);
+  };
+
+  const handleRadiusChange = (e) => {
+    setRadius(e.target.value);
+  };
+
+  const handleBtnClick = (e) => {
+    
+  };
+
   return (
-
-
 
     <div className="app">
       <Sidebar className="sidebar-1">
@@ -54,7 +68,7 @@ function SideBarMenu() {
               style={!isSidebarOpenFav ? { backgroundColor: '#C75E5E', color: '#fff', border: '3px solid #C75E5E' } : {
                 backgroundColor: '#fff', color: '#C75E5E', border: '3px solid #C4C4C4'
             }}>
-            <MdOutlineFavorite />
+            <IoMdBookmark />
           </SButtonFav>
 
         </div>
@@ -66,10 +80,13 @@ function SideBarMenu() {
             <SSearchIcon>
               <HiMiniMagnifyingGlass />
             </SSearchIcon>
-            <input placeholder="Место, адрес.." />
+            <input type="text" placeholder="Место, адрес.." value={searchAddress} onChange={handleInputChange}/>
           </SSearch>
           <p className="text_radius">В радиусе</p>
-          <input className="input_radius" id="number" type="number" /> <text className="text_km">км</text>
+          <input className="input_radius" id="number" type="number" value={radius} onChange={handleRadiusChange} min={0}/> <text className="text_km">км</text>
+          <button className="find_btn" onClick={handleBtnClick}>
+            <HiMiniMagnifyingGlass />
+          </button>
         </div>
 
         <button className="btn_close" onClick={handleCloseSidebar}> 
@@ -83,7 +100,7 @@ function SideBarMenu() {
             <SSearchIcon>
               <HiMiniMagnifyingGlass />
             </SSearchIcon>
-            <input placeholder="Место, адрес.." />
+            <input type="text" placeholder="Место, адрес.." value={searchAddress} onChange={handleInputChange}/>
           </SSearch>
         </div>
 

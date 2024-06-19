@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { YMaps, Map, Placemark, Circle } from '@pbe/react-yandex-maps'
+import { AppContext } from '../provider/AppProvider.js';
 
 const containerStyle = {
     width: '100vw',
@@ -9,11 +10,27 @@ const containerStyle = {
 
 const MyMap = () => {
 
+    const { searchAddress, radius } = useContext(AppContext);
     const [userLocation, setUserLocation] = useState({});
 
     useEffect(() => {
         getUserLocation();
     }, [])
+
+    useEffect(() => {
+        getCoordinates();
+      }, [searchAddress]);
+
+    const getCoordinates = async () => {
+        try {
+          const response = await fetch(`https://geocode-maps.yandex.ru/1.x/?apikey=e5c73b1e-041d-49f0-b6d3-c96913f230d3&format=json&geocode=${searchAddress}`);
+          const data = await response.json();
+          const coordinates = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
+          setUserLocation([parseFloat(coordinates[1]), parseFloat(coordinates[0])]);
+        } catch (error) {
+          console.error('Error getting coordinates:', error);
+        }
+      };
 
     const getUserLocation = () => { 
         if (navigator.geolocation) {
@@ -36,20 +53,32 @@ const MyMap = () => {
     return (
         <YMaps>
             <Map
-                defaultState={{ center: userLocation, zoom: 15 }}
-                style={containerStyle} >
+                state={{
+                    center: userLocation,
+                    zoom: 16,
+                    on: {
+                      userLocationChange: (event) => {
+                        this.setState({ center: event.value });
+                      },
+                    },
+                  }}
+                  style={containerStyle}  
+                >
+
+
+
                 {userLocation && (
                     <Placemark
                         geometry={userLocation}
                         options={{
                             iconLayout: 'default#image',
-                            iconImageHref: 'https://ltdfoto.ru/images/2024/06/16/Vector.png',
+                            iconImageHref: 'https://i.ibb.co/r0QJ7QK/2.png',
                             iconImageSize: [32, 24],
                         }}
                     />
                 )}
                 <Circle
-                    geometry={[userLocation, 1000]}
+                    geometry={[userLocation, radius * 1000]}
                     options={{
                         draggable: false,
                         fillColor: "#5E7BC7",
@@ -60,7 +89,7 @@ const MyMap = () => {
                     }}
                 />
                 <Circle
-                    geometry={[userLocation, 100]}
+                    geometry={[userLocation, radius * 100]}
                     options={{
                         draggable: false,
                         fillColor: "#5E7BC7",
