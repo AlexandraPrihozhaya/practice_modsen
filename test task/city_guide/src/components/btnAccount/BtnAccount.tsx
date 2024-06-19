@@ -1,6 +1,9 @@
 import React, {useState} from "react"
 import Logout from "../logout/Logout";
-import { Link } from "react-router-dom"
+import {
+  SAvatar, SDropdownMenu, SDropdownItem, SLink
+} from "./styled";
+import { Avatar } from '@mui/material';
 
 const BtnAccount = () => {
 
@@ -12,36 +15,28 @@ const BtnAccount = () => {
     }
 
     return (
-        <div>
-            <li className="nav-item dropdown">
-              <a
-                className={`nav-link dropdown-toggle ${showAccount ? "show" : ""}`}
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                onClick={handleAccountClick}>
-                {" "}
-                Аккаунт
-              </a>
+      <SAvatar>
+        <a
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          onClick={handleAccountClick}>
+          <Avatar src="/broken-image.jpg"/>
+        </a>
 
-              <ul
-                className={`dropdown-menu ${showAccount ? "show" : ""}`}
-                aria-labelledby="navbarDropdown">
-                {isAuth ? (
-                  <Logout />
-                ) : (
-                  <li>
-                    <Link className="dropdown-item" to={"/login"}>
-                      Вход
-                    </Link>
-                  </li>
-                )}
-              </ul>
-
-
-            </li>
-        </div>
+        <SDropdownMenu show={showAccount}>
+          {isAuth ? (
+            <Logout />
+          ) : (
+            <SDropdownItem>
+              <SLink to="/login">
+                Вход
+              </SLink>
+            </SDropdownItem>
+          )}
+        </SDropdownMenu>
+      </SAvatar>
     );
 };
 

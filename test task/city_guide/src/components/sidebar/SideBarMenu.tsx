@@ -60,20 +60,13 @@ function SideBarMenu() {
         <Sidebar.Logo className="logo" href="/" img="https://ltdfoto.ru/images/2024/06/17/Group.png" imgAlt="logo"></Sidebar.Logo>
         <div className='icons'>
 
-          <SButtonSearch onClick={handleOpenSidebarSearch}
-              style={!isSidebarOpenSearch ? { backgroundColor: '#5E7BC7', color: '#fff', border: '3px solid #5E7BC7' } : {
-                backgroundColor: '#fff', color: '#5E7BC7', border: '3px solid #C4C4C4'
-          }}>
+          <SButtonSearch onClick={handleOpenSidebarSearch} isOpen={isSidebarOpenSearch}>
             <HiMiniMagnifyingGlass />
           </SButtonSearch>
           
-          <SButtonFav className='icon_cont fav' onClick={handleOpenSidebarFav}
-              style={!isSidebarOpenFav ? { backgroundColor: '#C75E5E', color: '#fff', border: '3px solid #C75E5E' } : {
-                backgroundColor: '#fff', color: '#C75E5E', border: '3px solid #C4C4C4'
-            }}>
+          <SButtonFav className='icon_cont fav' onClick={handleOpenSidebarFav} isOpen={isSidebarOpenFav}>
             <IoMdBookmark />
           </SButtonFav>
-
         </div>
 
         <BtnAccount />

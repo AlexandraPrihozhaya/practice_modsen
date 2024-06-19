@@ -32,8 +32,10 @@ export const SButtonSearch = styled.button`
     width: 60px;
     height: 60px;
     border-radius: 6px;
-    border: 3px solid #5E7BC7;
     cursor: pointer;
+    background-color: ${ props => (!props.isOpen ? `#5E7BC7` : `#fff`)};
+    color: ${ props => (!props.isOpen ? `#fff` : `#5E7BC7`)};
+    border: ${ props => (!props.isOpen ? `3px solid #5E7BC7` : `3px solid #C4C4C4`)};
     margin-bottom: 15px;
     font-size: 24px;
     display: flex;
@@ -46,8 +48,10 @@ export const SButtonFav = styled.button`
     width: 60px;
     height: 60px;
     border-radius: 6px;
-    border: 3px solid #C75E5E;
     cursor: pointer;
+    background-color: ${ props => (!props.isOpen ? `#C75E5E` : `#fff`)};
+    color: ${ props => (!props.isOpen ? `#fff` : `#C75E5E`)};
+    border: ${ props => (!props.isOpen ? `3px solid #C75E5E` : `3px solid #C4C4C4`)};
     font-size: 24px;
     display: flex;
     justify-content: center;
