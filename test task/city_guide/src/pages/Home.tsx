@@ -1,6 +1,6 @@
 import React from "react"
-import SideBarMenu from "../components/sidebar/SideBarMenu.js"
-import MyMap from "../components/ymap/MyMap.js"
+import SideBarMenu from "../components/sidebar/SideBarMenu"
+import MyMap from "../components/ymap/MyMap"
 
 const Home = () => {
 

@@ -3,10 +3,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 let mode = 'development';
-let target = 'web';
-if (process.env.NODE_ENV === 'production') {
+let target = 'web'; 
+if (process.env.NODE_ENV === 'production') { 
   mode = 'production';
-  target = 'browserslist';
+  target = 'browserslist'; 
 }
 
 const plugins = [
@@ -14,14 +14,14 @@ const plugins = [
     template: './public/index.html',
   }),
   new MiniCssExtractPlugin({
-    filename: '[name].[contenthash].css',
-  }),
+    filename: '[name].[contenthash].css', 
+  }), 
 ];
 
 module.exports = {
-  mode, 
+  mode,
   target,
-  entry: './src/index.js',
+  entry: './src/index.tsx',
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -31,6 +31,10 @@ module.exports = {
   
   devServer: {
     hot: true,
+  },
+
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
   },
 
   module: {
@@ -44,7 +48,7 @@ module.exports = {
           'postcss-loader',
           'sass-loader',
         ],
-      },
+      }, // Добавляем загрузчики стилей
       {
         test: /\.(png|jpe?g|gif|svg|webp|ico)$/i,
         type: mode === 'production' ? 'asset' : 'asset/resource', 
@@ -54,20 +58,21 @@ module.exports = {
         type: 'asset/resource',
       },
       {
-        test: /\.js$/,
-        exclude: /node_modules/, 
+        test: /\.tsx?$/, 
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true, 
             presets: [
-              '@babel/preset-env',
+              '@babel/preset-env', 
               '@babel/preset-react',
+              '@babel/preset-typescript', 
             ], 
           },
         },
       },
     ],
   },
-  plugins
+  plugins,
 };

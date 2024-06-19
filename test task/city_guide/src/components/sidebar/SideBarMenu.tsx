@@ -5,7 +5,7 @@ import { IoMdArrowDropleft, IoMdBookmark } from "react-icons/io";
 import {
   SSearch, SSearchIcon, SButtonSearch, SButtonFav
 } from "./styled";
-import { AppContext } from '../provider/AppProvider.js';
+import { AppContext } from '../provider/AppProvider';
 
 function SideBarMenu() {
   const [isSidebarOpenSearch, setIsSidebarOpenSearch] = useState(false);
@@ -34,7 +34,9 @@ function SideBarMenu() {
     }
   };
 
+  // @ts-expect-error TS(2339): Property 'searchAddress' does not exist on type '{... Remove this comment to see the full error message
   const { searchAddress, setSearchAddress } = useContext(AppContext);
+  // @ts-expect-error TS(2339): Property 'radius' does not exist on type '{}'.
   const { radius, setRadius } = useContext(AppContext);
 
 

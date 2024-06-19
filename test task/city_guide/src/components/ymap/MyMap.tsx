@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react"
 import { YMaps, Map, Placemark, Circle } from '@pbe/react-yandex-maps'
-import { AppContext } from '../provider/AppProvider.js';
+import { AppContext } from '../provider/AppProvider';
 
 const containerStyle = {
     width: '100vw',
@@ -10,6 +10,7 @@ const containerStyle = {
 
 const MyMap = () => {
 
+    // @ts-expect-error TS(2339): Property 'searchAddress' does not exist on type '{... Remove this comment to see the full error message
     const { searchAddress, radius } = useContext(AppContext);
     const [userLocation, setUserLocation] = useState({});
 
@@ -54,14 +55,17 @@ const MyMap = () => {
         <YMaps>
             <Map
                 state={{
+                    // @ts-expect-error TS(2740): Type '{}' is missing the following properties from... Remove this comment to see the full error message
                     center: userLocation,
                     zoom: 16,
                     on: {
                       userLocationChange: (event) => {
+                        // @ts-expect-error TS(2532): Object is possibly 'undefined'.
                         this.setState({ center: event.value });
                       },
                     },
                   }}
+                  // @ts-expect-error TS(2322): Type '{ width: string; height: string; position: s... Remove this comment to see the full error message
                   style={containerStyle}  
                 >
 

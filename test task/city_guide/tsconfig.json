@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+  "target" : "es5",
+  "module" : "commonjs",
+  "lib": ["dom", "es2015", "es2016"],
+  "allowJs": true,
+  "checkJs": false,
+  "jsx": "react",
+  "strict": true,
+  "noImplicitAny": false,
+  "strictNullChecks": false,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "forceConsistentCasingInFileNames": true
+},
+  "include": ["src"]
+}
