@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 
 const BtnAccount = () => {
 
-
+    const isAuth = localStorage.getItem("auth");
     const [showAccount, setShowAccount] = useState(false)
 
     const handleAccountClick = () => {
@@ -28,7 +28,7 @@ const BtnAccount = () => {
               <ul
                 className={`dropdown-menu ${showAccount ? "show" : ""}`}
                 aria-labelledby="navbarDropdown">
-                {1 ? (
+                {isAuth ? (
                   <Logout />
                 ) : (
                   <li>
