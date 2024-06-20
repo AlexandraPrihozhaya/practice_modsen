@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: 'Montserrat';
 }
 
 .App-logo {
@@ -44,7 +45,6 @@
   border-radius: 10px;
   padding: 0px 20px 0px 30px;
   font-size: 14px;
-  font-family: 'Montserrat';
   color: #373737;
   margin-right: 14px;
 }

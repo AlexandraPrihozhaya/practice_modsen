@@ -27,10 +27,12 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     assetModuleFilename: 'assets/[hash][ext][query]',
     clean: true,
+    publicPath: '/'
   },
   
   devServer: {
     hot: true,
+    historyApiFallback: true
   },
 
   resolve: {

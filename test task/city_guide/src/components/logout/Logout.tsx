@@ -16,14 +16,6 @@ const Logout = () => {
 
   return (
     <>
-      <li>
-        <Link className="dropdown-item" to={"/profile"}>
-          Профиль
-        </Link>
-      </li>
-      <li>
-        <hr className="dropdown-divider" />
-      </li>
       <button className="dropdown-item" onClick={handleLogout}>
         Выход
       </button>
