@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react"
 import { YMaps, Map, Placemark, Circle } from '@pbe/react-yandex-maps'
-import { AppContext } from '../provider/AppProvider';
+import { AppContext } from '../Provider';
 
 const containerStyle = {
     width: '100vw',

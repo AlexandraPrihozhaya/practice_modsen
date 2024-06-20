@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import Logout from "../logout/Logout";
+import Logout from "../Logout";
 import {
   SAvatar, SDropdownMenu, SDropdownItem, SLink
 } from "./styled";

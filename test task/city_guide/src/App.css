@@ -49,7 +49,7 @@
   margin-right: 14px;
 }
 
-.text_radius {
+.text_radius, .text_search {
   font-size: 20px;
   font-family: 'Montserrat';
   font-weight: 600;
@@ -148,4 +148,16 @@
   align-items: center;
   position: absolute;
   bottom: 45px;
+}
+
+.selected {
+  background-color: #f0f0f0;
+}
+
+.disabled {
+  opacity: 0.5; 
+}
+ 
+.cat {
+  width: 50px;
 }

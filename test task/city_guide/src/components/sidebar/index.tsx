@@ -5,8 +5,9 @@ import { IoMdArrowDropleft, IoMdBookmark } from "react-icons/io";
 import {
   SSearch, SSearchIcon, SButtonSearch, SButtonFav
 } from "./styled";
-import { AppContext } from '../provider/AppProvider';
-import BtnAccount from '../btnAccount/BtnAccount';
+import { AppContext } from '../Provider';
+import BtnAccount from '../BtnAccount';
+import CategoryList from '../CategoryList';
 
 function SideBarMenu() {
   const [isSidebarOpenSearch, setIsSidebarOpenSearch] = useState(false);
@@ -80,6 +81,8 @@ function SideBarMenu() {
             </SSearchIcon>
             <input type="text" placeholder="Место, адрес.." value={searchAddress} onChange={handleInputChange}/>
           </SSearch>
+          <p className="text_search">Искать:</p>
+          {/* <CategoryList /> */}
           <p className="text_radius">В радиусе</p>
           <input className="input_radius" id="number" type="number" value={radius} onChange={handleRadiusChange} min={0}/> <text className="text_km">км</text>
           <button className="find_btn" onClick={handleBtnClick}>
