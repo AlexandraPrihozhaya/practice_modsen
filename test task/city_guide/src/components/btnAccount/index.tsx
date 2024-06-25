@@ -1,43 +1,36 @@
 import React, {useState} from "react"
-import Logout from "../Logout";
 import {
-  SAvatar, SDropdownMenu, SDropdownItem, SLink
+  SAvatar, SButton
 } from "./styled";
 import { Avatar } from '@mui/material';
+import { useAuth } from "../../hooks/useAuth";
+import { useAppDispatch } from "../../hooks/redux";
+import { removeUser } from "../../store/reducers/userSlice";
+import searchbtn from '@assets/searchbtn.png'
 
 const BtnAccount = () => {
 
-    const isAuth = localStorage.getItem("auth");
-    const [showAccount, setShowAccount] = useState(false)
-
-    const handleAccountClick = () => {
-      setShowAccount(!showAccount)
-    }
+    const {isAuth, email} = useAuth();
+    const dispatch = useAppDispatch();
 
     return (
-      <SAvatar>
-        <a
-          href="#"
-          role="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          onClick={handleAccountClick}>
+      isAuth ? (
+        <SAvatar>
+        <SButton
+          onClick={() => dispatch(removeUser())}>
           <Avatar src="/broken-image.jpg"/>
-        </a>
-
-        <SDropdownMenu show={showAccount}>
-          {isAuth ? (
-            <Logout />
-          ) : (
-            <SDropdownItem>
-              <SLink to="/login">
-                Вход
-              </SLink>
-            </SDropdownItem>
-          )}
-        </SDropdownMenu>
+        </SButton>
       </SAvatar>
-    );
+      ) : (
+        <SAvatar>
+          <a
+            href="/login"
+            role="button">
+            <Avatar src={searchbtn}/>
+          </a>
+        </SAvatar>
+      )
+    )
 };
 
 export default BtnAccount

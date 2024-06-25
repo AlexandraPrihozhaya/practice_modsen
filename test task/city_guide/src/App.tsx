@@ -10,10 +10,9 @@ import { useAuth } from './hooks/useAuth';
 
 function App() {
 
-  const { user, login, logout, setUser } = useAuth();
+  // const { user, login, logout, setUser } = useAuth();
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -21,7 +20,6 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
       </Router>       
-    </AuthContext.Provider>
   );
 }
 

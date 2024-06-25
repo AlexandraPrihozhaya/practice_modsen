@@ -1,28 +1,36 @@
-import { useEffect } from "react";
-import { useUser, User } from "./useUser";
+import { useAppSelector } from "./redux";
 
-export const useAuth = () => {
+export function useAuth() {
+   
+   const {email, token, id} = useAppSelector(state => state.userReducer);
 
-  const { user, addUser, removeUser, setUser } = useUser();
-
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      addUser(JSON.parse(user));
-    }
-  }, [addUser, localStorage.getItem]);
-
-
-  const login = (user: User) => {
-    addUser(user);
+   return {
+      isAuth: !!email,
+      email,
+      token,
+      id,
   };
+}
+   
+  // const { user, addUser, removeUser, setUser } = useUser();
 
 
-  const logout = () => {
-    removeUser();
-  };
+  // useEffect(() => {
+  //   const user = localStorage.getItem("user");
+  //   if (user) {
+  //     addUser(JSON.parse(user));
+  //   }
+  // }, [addUser, localStorage.getItem]);
 
 
-  return { user, login, logout, setUser };
-};
+  // const login = (user: User) => {
+  //   addUser(user);
+  // };
+
+
+  // const logout = () => {
+  //   removeUser();
+  // };
+
+
+  // return { user, login, logout, setUser };

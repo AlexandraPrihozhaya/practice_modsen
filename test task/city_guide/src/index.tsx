@@ -4,13 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AppProvider } from './components/Provider';
+import { Provider } from 'react-redux';
+import { setupStore } from './store';
+import './firebase';
 
+const store = setupStore();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AppProvider>
-      <App />
-    </AppProvider>
+    <Provider store={store}>
+      <AppProvider >
+        <App />
+      </AppProvider>
+      </Provider>
   </React.StrictMode>
 );
 

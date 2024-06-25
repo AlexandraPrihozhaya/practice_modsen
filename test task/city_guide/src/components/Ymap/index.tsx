@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useContext } from "react"
 import { YMaps, Map, Placemark, Circle } from '@pbe/react-yandex-maps'
 import { AppContext } from '../Provider';
+import vector from '@assets/Vector.png';
+import { useLocation } from "../../hooks/useLocation";
+import { useAuth } from "../../hooks/useAuth";
+
 
 const containerStyle = {
     width: '100vw',
@@ -11,58 +15,39 @@ const containerStyle = {
 const MyMap = () => {
 
     // @ts-expect-error TS(2339): Property 'searchAddress' does not exist on type '{... Remove this comment to see the full error message
-    const { searchAddress, radius } = useContext(AppContext);
-    const [userLocation, setUserLocation] = useState({});
+    const { radius } = useContext(AppContext);
+    const [attractions, setAttractions] = useState([]);
+    const {userLocation, error} = useLocation()
+    const {isAuth, email} = useAuth();
 
     useEffect(() => {
-    if (searchAddress) {
-        getCoordinates();
-    } else {
-        getUserLocation();
-    }
-    }, [searchAddress]);
+        if (radius != '' && userLocation.length != 0) {
+            fetchAttractions();
+        }
+    }, [radius, userLocation]);
 
-    const getCoordinates = async () => {
-        try {
-            if (searchAddress) {
-                const response = await fetch(`https://geocode-maps.yandex.ru/1.x/?apikey=e5c73b1e-041d-49f0-b6d3-c96913f230d3&format=json&geocode=${searchAddress}`);
-                const data = await response.json();
-                const coordinates = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
-                setUserLocation([parseFloat(coordinates[1]), parseFloat(coordinates[0])]);
-            }
-        } catch (error) {
-          console.error('Error getting coordinates:', error);
+    const fetchAttractions = async () => {
+    try {
+        let r = radius * 1000;
+        const response = await fetch(`https://search-maps.yandex.ru/v1/?text=архитектура&type=biz&lang=ru_RU&apikey=d2060b7e-ca8e-42ff-963a-3da7497a2f25&rspn=1&ll=${userLocation[1]},${userLocation[0]}&spn=${r / 6371*360*2},${r / 6371*360*2}&results=100`);
+        const data = await response.json();
+        setAttractions(data.features);    
+    } catch (error) {
+        console.error("Error fetching attractions:", error);
         }
-      };
-
-    const getUserLocation = () => { 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    setUserLocation([ latitude, longitude ]);
-                },
-                (error) => {
-                    console.error('Error getting user location:', error);
-                }
-            );
-        }
-        else {
-            console.error('Geolocation is not supported by this browser.');
-        }
-     };
+    };
 
     return (
         <YMaps>
             <Map
                 state={{
-                    // @ts-expect-error TS(2740): Type '{}' is missing the following properties from... Remove this comment to see the full error message
+                    
                     center: userLocation,
                     zoom: 16,
+                    // @ts-expect-error TS(2322): Type '{ center: any; zoom: number; on: { userLocat... Remove this comment to see the full error message
                     on: {
                         userLocationChange: (event) => {
-                        // @ts-expect-error TS(2532): Object is possibly 'undefined'.
+                            // @ts-expect-error TS(2532): Object is possibly 'undefined'
                             this.setState({ center: event.value });
                         },
                     },
@@ -70,12 +55,12 @@ const MyMap = () => {
                 // @ts-expect-error TS(2322): Type '{ width: string; height: string; position: s... Remove this comment to see the full error message
                     style={containerStyle} >
 
-                {userLocation && (
+                {userLocation && isAuth && (
                     <Placemark
                         geometry={userLocation}
                         options={{
                             iconLayout: 'default#image',
-                            iconImageHref: 'https://i.ibb.co/r0QJ7QK/2.png',
+                            iconImageHref: vector,
                             iconImageSize: [32, 24],
                         }}
                     />
@@ -100,6 +85,18 @@ const MyMap = () => {
                         strokeWidth: 0
                     }}
                 />
+
+                {attractions.map((cafe) => (
+                    <Placemark
+                        key={cafe.id}
+                        geometry={[cafe.geometry.coordinates[1], cafe.geometry.coordinates[0]]} 
+                        options={{
+                        iconLayout: 'default#image',
+                        iconImageHref: 'https://pngicon.ru/file/uploads/vinni-pukh-v-png.png', 
+                        iconImageSize: [32, 24],
+                        }}
+                    />
+                ))}
             </Map>
         </YMaps>
     )
