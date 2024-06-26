@@ -7,7 +7,8 @@ interface GeoObjectsState {
     error: string;
     coordinates: Array<number>
     radius: number,
-    selectedCategories: Array<IIcon>
+    selectedCategories: Array<IIcon>,
+    searchAddress: string
 }
 
 const initialState: GeoObjectsState = {
@@ -15,8 +16,9 @@ const initialState: GeoObjectsState = {
     isLoading: false,
     error: '',
     coordinates: [0,0],
-    radius: 100,
-    selectedCategories: []
+    radius: 0,
+    selectedCategories: [],
+    searchAddress: ''
 };
 
 export const geoObjectsSlice = createSlice({
@@ -43,6 +45,9 @@ export const geoObjectsSlice = createSlice({
         geoObjectsFetchingError(state, action: PayloadAction<string>) {
             state.isLoading = false;
             state.error = action.payload;
+        },
+        setSearchAddress(state, action: PayloadAction<string>) {
+            state.searchAddress = action.payload;
         }
     },
 })
@@ -50,7 +55,8 @@ export const geoObjectsSlice = createSlice({
 export const {
     setCoordinates,
     setRadius,
-    setSelectedCategories
+    setSelectedCategories,
+    setSearchAddress
 } = geoObjectsSlice.actions;
 
 export default geoObjectsSlice.reducer;

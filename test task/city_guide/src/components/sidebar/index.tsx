@@ -1,19 +1,42 @@
 import { Sidebar } from 'flowbite-react';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { IoMdArrowDropleft, IoMdBookmark } from "react-icons/io";
 import {
-  SSearch, SSearchIcon, SButtonSearch, SButtonFav
+  SSearch, SSearchIcon, SButtonSearch, SButtonFav, SCards
 } from "./styled";
-import { AppContext } from '../Provider';
 import BtnAccount from '../BtnAccount';
 import CategoryList from '../CategoryList';
 import logo from '@assets/logo.png';
 import Card from '../Card';
+import FullCard from '../FullCard';
+import { useAppDispatch } from '../../hooks/redux';
+import { setRadius, setSearchAddress } from '../../store/reducers/geoObjects';
 
 function SideBarMenu() {
   const [isSidebarOpenSearch, setIsSidebarOpenSearch] = useState(false);
   const [isSidebarOpenFav, setIsSidebarOpenFav] = useState(false);
+
+  const [radiusInput, setRadiusInput] = useState<number>(0);
+  const [searchAddressInput, setSearchAddressInput] = useState<string>();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setRadius(radiusInput));
+  }, [radiusInput])
+
+  useEffect(() => {
+    dispatch(setSearchAddress(searchAddressInput));
+  }, [searchAddressInput])
+
+  const handleRadiusChange = (e) => {
+    setRadiusInput(Number(e.target.value));
+  };
+
+  const handleInputChange = (e) => {
+    setSearchAddressInput(e.target.value);
+  };
 
   const handleOpenSidebarSearch = () => {
     if (isSidebarOpenFav) {
@@ -38,20 +61,7 @@ function SideBarMenu() {
     }
   };
 
-  // @ts-expect-error TS(2339): Property 'searchAddress' does not exist on type '{... Remove this comment to see the full error message
-  const { searchAddress, setSearchAddress } = useContext(AppContext);
-  // @ts-expect-error TS(2339): Property 'radius' does not exist on type '{}'.
-  const { radius, setRadius } = useContext(AppContext);
-
   const [attractions, setAttractions] = useState([]);
-
-  const handleInputChange = (e) => {
-    setSearchAddress(e.target.value);
-  };
-
-  const handleRadiusChange = (e) => {
-    setRadius(e.target.value);
-  };
 
   const handleBtnClick = async () => {
   //   try {
@@ -90,12 +100,12 @@ function SideBarMenu() {
             <SSearchIcon>
               <HiMiniMagnifyingGlass />
             </SSearchIcon>
-            <input type="text" placeholder="Место, адрес.." value={searchAddress} onChange={handleInputChange}/>
+            <input type="text" placeholder="Место, адрес.." value={searchAddressInput} onChange={handleInputChange}/>
           </SSearch>
           <p className="text_search">Искать:</p>
           <CategoryList />
           <p className="text_radius">В радиусе</p>
-          <input className="input_radius" id="number" type="number" value={radius} onChange={handleRadiusChange} min={0}/> <text className="text_km">км</text>
+          <input className="input_radius" id="number" type="number" value={radiusInput} onChange={handleRadiusChange} min={0}/> <text className="text_km">км</text>
           <button className="find_btn" onClick={handleBtnClick}>
             <HiMiniMagnifyingGlass />
           </button>
@@ -112,10 +122,16 @@ function SideBarMenu() {
             <SSearchIcon>
               <HiMiniMagnifyingGlass />
             </SSearchIcon>
-            <input type="text" placeholder="Место, адрес.." value={searchAddress} onChange={handleInputChange}/>
+            <input type="text" placeholder="Место, адрес.." value={searchAddressInput} onChange={handleInputChange}/>
           </SSearch>
           <p className="text_search">Избранное:</p>
-          <Card />
+          <SCards>
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <FullCard />
+          </SCards>
         </div>
 
         <button className="btn_close" onClick={handleCloseSidebar}>
