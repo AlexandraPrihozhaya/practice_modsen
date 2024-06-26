@@ -5,12 +5,8 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import './App.css';
-import { AuthContext } from './context/AuthContext';
-import { useAuth } from './hooks/useAuth';
 
 function App() {
-
-  // const { user, login, logout, setUser } = useAuth();
 
   return (
       <Router>

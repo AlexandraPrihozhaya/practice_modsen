@@ -15,21 +15,30 @@ const API_KEY = "d2060b7e-ca8e-42ff-963a-3da7497a2f25";
 
 const MyMap = () => {
 
-    const [attractions, setAttractions] = useState([]);
-    
     const {userLocation, error} = useLocation();
     const geoObjects = useAppSelector(state => state.geoObjectsReducer);
     const dispatch = useAppDispatch();
+    const [obj, setObj] = useState([]);
 
     useEffect(() => {
-        fetchAttractions();
+        getAttractions().then(attractions => setObj(attractions));
+        console.log(obj);
     }, [geoObjects.radius, userLocation, geoObjects.selectedCategories, geoObjects.searchAddress]);
 
-    const fetchAttractions = async () => {
-        const response = await fetch(`https://api.routing.yandex.net/v2/route?waypoints=25.234369457896325,55.280222457968712|25.234369457896325,55.401544758961258&mode=walking&apikey=96cda7f7-b384-479b-a403-7d6fbd8d95c2`);
-        const data = await response.json();
-        console.log(data)
-    };
+    const getAttractions = async () => {
+        let arr = [];
+        for (let i = 0; i < geoObjects.selectedCategories.length; i++) {
+            try {
+                const response = await fetch(`https://search-maps.yandex.ru/v1/?text=${geoObjects.selectedCategories[i].text}&type=biz&lang=ru_RU&apikey=${API_KEY}&rspn=1&ll=${userLocation[1]},${userLocation[0]}&results=100`);
+                const data = await response.json();
+                arr.push({ attractions : data.features, category: geoObjects.selectedCategories[i] }); 
+            } catch (error) {
+                console.error("Error fetching attractions:", error);
+            }
+        }
+
+        return arr;
+    }
 
     return (
         <YMaps>
@@ -79,19 +88,26 @@ const MyMap = () => {
                         strokeWidth: 0
                     }}
                 />
-
-                {attractions.map((place) => (
-                    <Placemark
-                        key={place.id}
-                        geometry={[place.geometry.coordinates[1], place.geometry.coordinates[0]]} 
-                        options={{
-                        iconLayout: 'default#image',
-                        iconImageHref: 'https://pngicon.ru/file/uploads/vinni-pukh-v-png.png', 
-                        iconImageSize: [32, 24],
-                        }}
-                    />
-                ))}
-
+                
+                {obj.length !== 0 && obj.map((place) => (
+                    place.attractions.map((attr) => (
+                        <Placemark
+                            key={attr.id}
+                            geometry={[attr.geometry.coordinates[1], attr.geometry.coordinates[0]]} 
+                            options={{
+                                iconLayout: 'default#image',
+                                iconImageHref: place.category.icon, 
+                                iconImageSize: [32, 32]
+                            }}
+                            // onClick={() => window.alert(attr.properties.CompanyMetaData.name +
+                            //     attr.properties.CompanyMetaData.address + 
+                            //     attr.properties.CompanyMetaData.Hours.text +
+                            //     attr.properties.CompanyMetaData.Phones[0].formatted+
+                            //     attr.properties.CompanyMetaData.url)}
+                        />
+                    ))
+                ))
+            } 
             </Map>
         </YMaps>
     )
