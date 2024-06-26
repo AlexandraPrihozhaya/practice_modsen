@@ -92,7 +92,6 @@ const MyMap = () => {
                     />
                 ))}
 
-
             </Map>
         </YMaps>
     )
