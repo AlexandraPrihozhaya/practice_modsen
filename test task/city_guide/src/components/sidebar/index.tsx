@@ -127,9 +127,6 @@ function SideBarMenu() {
           <p className="text_search">Избранное:</p>
           <SCards>
             <Card />
-            <Card />
-            <Card />
-            <Card />
             <FullCard />
           </SCards>
         </div>
