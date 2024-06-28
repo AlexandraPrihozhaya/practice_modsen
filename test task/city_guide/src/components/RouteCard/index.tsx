@@ -1,13 +1,22 @@
 import React from 'react';
 import {
-    SCard
+    SCard, SDiv, SDistance, STime, STextValue, STextName
 } from "./styled";
 
 const RouteCard = () => {
 
     return (
         <SCard>
-            frtgyhuj
+            <SDiv>
+                <SDistance>
+                    <STextValue>1,1 km</STextValue>
+                    <STextName>дистанция</STextName>
+                </SDistance>
+                <STime>
+                    <STextValue>40 мин</STextValue>
+                    <STextName>примерное время</STextName>
+                </STime>
+            </SDiv>
         </SCard>
     );
 }

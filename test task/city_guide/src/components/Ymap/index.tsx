@@ -113,11 +113,11 @@ const MyMap = () => {
                     ))
                 ))           
             } 
+            </Map>
             {selectedPlace && obj.length && (
                 <InfoCard object={selectedPlace} />
             )}
-            
-            </Map>
+            <RouteCard />
         </YMaps>
     )
 }

@@ -19,7 +19,7 @@ export const SCard = styled.div`
     top: 10px;
     right: 10px;
     background-color: #fff;
-    padding: 10px;
+    padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     width: 300px;
@@ -28,6 +28,7 @@ export const SCard = styled.div`
 export const STitle = styled.text`
     font-weight: 700;
     font-size: 20px;
+    color: #405F7B;
 `;
 
 export const SText = styled.p`
