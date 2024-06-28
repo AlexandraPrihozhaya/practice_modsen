@@ -8,7 +8,11 @@ interface GeoObjectsState {
     coordinates: Array<number>
     radius: number,
     selectedCategories: Array<IIcon>,
-    searchAddress: string
+    searchAddress: string,
+    route: {
+        distance: number;
+        duration: number;
+    }
 }
 
 const initialState: GeoObjectsState = {
@@ -18,7 +22,11 @@ const initialState: GeoObjectsState = {
     coordinates: [0,0],
     radius: 0,
     selectedCategories: [],
-    searchAddress: ''
+    searchAddress: '',
+    route: {
+        distance: 0,
+        duration: 0
+    }
 };
 
 export const geoObjectsSlice = createSlice({
@@ -48,7 +56,10 @@ export const geoObjectsSlice = createSlice({
         },
         setSearchAddress(state, action: PayloadAction<string>) {
             state.searchAddress = action.payload;
-        }
+        },
+        setRoute(state, action: PayloadAction<{ distance: number; duration: number; }>) {
+            state.route = action.payload;
+        },
     },
 })
 
@@ -56,7 +67,8 @@ export const {
     setCoordinates,
     setRadius,
     setSelectedCategories,
-    setSearchAddress
+    setSearchAddress,
+    setRoute
 } = geoObjectsSlice.actions;
 
 export default geoObjectsSlice.reducer;

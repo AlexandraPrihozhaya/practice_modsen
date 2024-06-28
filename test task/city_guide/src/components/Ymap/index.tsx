@@ -1,3 +1,102 @@
+// import React, { useEffect, useState } from 'react';
+// import { load } from '@2gis/mapgl';
+// import { Directions } from '@2gis/mapgl-directions';
+// import { Clusterer } from '@2gis/mapgl-clusterer';
+
+// import {
+//     SMap
+//   } from "./styled";
+//   import { useLocation } from '../../hooks/useLocation';
+//   import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+
+
+// const API_KEY = "d2060b7e-ca8e-42ff-963a-3da7497a2f25";
+// const API_KEY_2 = "d6a05483-2ece-44c4-a5b8-5aa1031e577f"
+// const API_KEY_2GIS = "029e4398-139c-4ef1-bba8-11abd9b1a289"
+
+// const MyMap = () => {
+
+//     const {userLocation, error} = useLocation();
+//     const geoObjects = useAppSelector(state => state.geoObjectsReducer);
+//     const dispatch = useAppDispatch();
+//     const [obj, setObj] = useState([]);
+//     const [selectedPlace, setSelectedPlace] = useState(null);
+
+//     const handlePlacemarkClick = (place) => {
+//         setSelectedPlace(place);
+//     };
+
+//     useEffect(() => {
+//         if (geoObjects.radius !== 0 && userLocation && geoObjects.selectedCategories)
+//             getAttractions().then(attractions => setObj(attractions));
+//     }, [geoObjects.radius, userLocation, geoObjects.selectedCategories]);
+
+//     const getAttractions = async () => {
+//         let arr = [];
+//         for (let i = 0; i < geoObjects.selectedCategories.length; i++) {
+//             try {
+//                 const radius = geoObjects.radius/111;
+//                 const response = await fetch(`https://search-maps.yandex.ru/v1/?text=${geoObjects.selectedCategories[i].text}&type=biz&lang=ru_RU&apikey=${API_KEY_2}&rspn=1&spn=${radius},${radius}&ll=${userLocation[1]},${userLocation[0]}&results=100`);
+//                 const data = await response.json();
+//                 arr.push({ attractions : data.features, category: geoObjects.selectedCategories[i] }); 
+//             } catch (error) {
+//                 console.error("Error fetching attractions:", error);
+//             }
+//         }
+
+//         return arr;
+//     }
+
+
+//     useEffect(() => {
+//         let map: mapgl.Map | undefined = undefined;
+//         let directions: Directions | undefined = undefined;
+//         let clusterer: Clusterer | undefined = undefined;
+//         let circle: Circle | undefined = undefined;
+
+//         load().then((mapgl) => {
+//             map = new mapgl.Map('map-container', {
+//                 center: userLocation,
+//                 zoom: 16,
+//                 key: '029e4398-139c-4ef1-bba8-11abd9b1a289',
+//             });
+
+//             map.on('click', (e) => console.log(e));
+
+//             clusterer = new Clusterer(map, {
+//                 radius: 60,
+//             });
+
+//             if (userLocation) {
+//                 const markers = [{ coordinates: userLocation }]
+
+//                 clusterer.load(markers);
+//             }
+
+            
+//             directions = new Directions(map, {
+//                 directionsApiKey: '029e4398-139c-4ef1-bba8-11abd9b1a289', 
+//             });
+
+//             directions.carRoute({
+//                 points: [
+//                     [55.28273111108218, 25.234131928828333],
+//                     [55.35242563034581, 25.23925607042088],
+//                 ],
+//             });
+
+
+//         });
+//     });
+                           
+//     return (                     
+//         <SMap id='map-container' />
+//     )
+
+// }
+
+// export default MyMap
+    
 import React, { useEffect, useState, useContext } from "react"
 import { YMaps, Map, Placemark, Circle, RoutePanel } from '@pbe/react-yandex-maps'
 import vector from '@assets/Vector.png';
