@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom"
 import { FaArrowLeftLong } from "react-icons/fa6";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-export const SInput = styled.input`
+export const SInput = styled(Field)`
     padding: 16px;
     font-size: 14px;
     border: 1px solid #eee;
@@ -10,9 +11,25 @@ export const SInput = styled.input`
         outline: none;
         border-color: #eee;
     }
+    &.form-control {
+        background-color: #fff;
+        box-shadow: none;
+    }
+    &.error {
+        border-color: red;
+    }
+    &.valid {
+        border-color: green;
+    }
 `;
 
-export const SForm = styled.form`
+
+export const SErrorMessage = styled(ErrorMessage)`
+    color: red;
+    font-size: 14px;
+`;
+
+export const SForm = styled(Form)`
     width: 400px;   
     box-shadow: 0 0 15px 1px hsl(223, 48%, 57%, 0.2);
     background-color: #fff;
@@ -29,6 +46,7 @@ export const SDiv = styled.div`
     flex-direction: column;
     margin-bottom: 20px;
     width: 100%;
+    position: relative;
 `;
 
 export const SBlock = styled.div`
@@ -57,6 +75,17 @@ export const SH2 = styled.h2`
 
 export const SLabel = styled.label`
     font-weight: 300;
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: #fff;
+    padding: 0 5px;
+    &.error {
+        color: red;
+    }
+    &.valid {
+        color: green;
+    }
 `;
 
 export const SText = styled.text`

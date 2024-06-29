@@ -28,7 +28,6 @@ export const SButtonRoute = styled.button`
     width: 100%;
 `;
 
-
 export const SCard = styled.div`
     position: absolute;
     top: 10px;
