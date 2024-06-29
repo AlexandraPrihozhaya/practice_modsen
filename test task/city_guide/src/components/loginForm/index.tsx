@@ -52,24 +52,24 @@ const navigate = useNavigate();
           >
           {({ isSubmitting, errors, touched }) => (
         <SForm>
-        <SRow>
-          <SLink to={"/"}><SIcon /></SLink>
-          <SH2>Вход</SH2>
-        </SRow>
-        <SDiv className="form-group">
-          <SLabel htmlFor="email" className={touched.email && errors.email ? 'error' : touched.email && !errors.email ? 'valid' : ''}>Email</SLabel>
-          <SInput type="email" name="email" placeholder="email@mail.ru" 
-                className={touched.email && errors.email ? 'error' : touched.email && !errors.email ? 'valid' : ''}/>
-          <SErrorMessage name="email" component="div" />
-        </SDiv>
-        <SDiv className="form-group">
-          <SLabel htmlFor="password" className={touched.password && errors.password ? 'error' : touched.password && !errors.password ? 'valid' : ''}>Пароль</SLabel>
-          <SInput type="password" name="password" placeholder="123456" 
-                className={touched.password && errors.password ? 'error' : touched.password && !errors.password ? 'valid' : ''}/>
-          <SErrorMessage name="password" component="div" />
-        </SDiv>
-        <SButton type="submit" disabled={isSubmitting}>Войти</SButton>
-        <SText>нет аккаунта? <SLink to={"/register"}>Зарегистрироваться</SLink></SText>
+          <SRow>
+            <SLink to={"/"}><SIcon /></SLink>
+            <SH2>Вход</SH2>
+          </SRow>
+          <SDiv className="form-group">
+            <SLabel htmlFor="email" className={touched.email && errors.email ? 'error' : touched.email && !errors.email ? 'valid' : ''}>Email</SLabel>
+            <SInput type="email" name="email" placeholder="email@mail.ru" 
+                  className={touched.email && errors.email ? 'error' : touched.email && !errors.email ? 'valid' : ''}/>
+            <SErrorMessage name="email" component="div" />
+          </SDiv>
+          <SDiv className="form-group">
+            <SLabel htmlFor="password" className={touched.password && errors.password ? 'error' : touched.password && !errors.password ? 'valid' : ''}>Пароль</SLabel>
+            <SInput type="password" name="password" placeholder="123456" 
+                  className={touched.password && errors.password ? 'error' : touched.password && !errors.password ? 'valid' : ''}/>
+            <SErrorMessage name="password" component="div" />
+          </SDiv>
+          <SButton type="submit" disabled={isSubmitting}>Войти</SButton>
+          <SText>нет аккаунта? <SLink to={"/register"}>Зарегистрироваться</SLink></SText>
         </SForm>
         )}
       </Formik>

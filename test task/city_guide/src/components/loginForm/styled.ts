@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom"
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Form, Field, ErrorMessage } from 'formik';
 
 export const SInput = styled(Field)`
     padding: 16px;
@@ -23,7 +23,6 @@ export const SInput = styled(Field)`
     }
 `;
 
-
 export const SErrorMessage = styled(ErrorMessage)`
     color: red;
     font-size: 14px;
@@ -39,7 +38,6 @@ export const SForm = styled(Form)`
     justify-content: center;
     align-items: center;
 `;
-
 
 export const SDiv = styled.div`
     display: flex;
