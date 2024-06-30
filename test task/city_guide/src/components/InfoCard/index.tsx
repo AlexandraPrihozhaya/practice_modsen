@@ -21,9 +21,8 @@ const InfoCard = ({object}) => {
             const data = await response.json();
             const distance = parseFloat((data.routes[0].sections[0].summary.length / 1000).toFixed(1));
             const duration = Math.ceil(data.routes[0].sections[0].summary.duration / 60);
-            dispatch(setRoute({ distance, duration }));
-            console.log(userLocation[1] + " " + userLocation[0])
-            console.log(object.geometry.coordinates[0] + " " + object.geometry.coordinates[1])
+            let arrival = data.routes[0].sections[0].arrival.place.originalLocation;
+            dispatch(setRoute({ distance, duration, arrival: [arrival.lng, arrival.lat]}));
         } catch (error) {
             console.error("Error getting data:", error);
         }

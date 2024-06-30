@@ -9,6 +9,9 @@
 //   import { useLocation } from '../../hooks/useLocation';
 //   import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 
+// import InfoCard from "../InfoCard";
+// import RouteCard from "../RouteCard";
+
 
 // const API_KEY = "d2060b7e-ca8e-42ff-963a-3da7497a2f25";
 // const API_KEY_2 = "d6a05483-2ece-44c4-a5b8-5aa1031e577f"
@@ -52,13 +55,12 @@
 //         let map: mapgl.Map | undefined = undefined;
 //         let directions: Directions | undefined = undefined;
 //         let clusterer: Clusterer | undefined = undefined;
-//         let circle: Circle | undefined = undefined;
 
 //         load().then((mapgl) => {
 //             map = new mapgl.Map('map-container', {
-//                 center: userLocation,
-//                 zoom: 16,
-//                 key: '029e4398-139c-4ef1-bba8-11abd9b1a289',
+//                 center: [55.35242563034581, 25.23925607042088],
+//                 zoom: 13,
+//                 key: API_KEY_2GIS,
 //             });
 
 //             map.on('click', (e) => console.log(e));
@@ -68,29 +70,53 @@
 //             });
 
 //             if (userLocation) {
+//                 console.log(userLocation)
 //                 const markers = [{ coordinates: userLocation }]
 
 //                 clusterer.load(markers);
 //             }
 
+         
+//             // if (userLocation) {
             
-//             directions = new Directions(map, {
-//                 directionsApiKey: '029e4398-139c-4ef1-bba8-11abd9b1a289', 
-//             });
+//             //     const markers = [
+//             //         { coordinates: userLocation },
+//             //         ...obj.filter(place => place.attractions.length > 0)
+//             //             .flatMap(place => 
+//             //                 place.attractions.map(attr => ({
+//             //                     coordinates: [attr.geometry.coordinates[1], attr.geometry.coordinates[0]],
+//             //                     onClick: () => handlePlacemarkClick(attr)
+//             //                 }))
+//             //             )
+//             //     ];
+            
+//             //     clusterer.load(markers);
+//             // } 
 
-//             directions.carRoute({
-//                 points: [
-//                     [55.28273111108218, 25.234131928828333],
-//                     [55.35242563034581, 25.23925607042088],
-//                 ],
-//             });
+
+//             // directions = new Directions(map, {
+//             //     directionsApiKey: API_KEY_2GIS, 
+//             // });
+
+//             // directions.carRoute({
+//             //     points: [
+//             //         [userLocation[0], userLocation[1]],
+//             //         [55.35242563034581, 25.23925607042088],
+//             //     ],
+//             // });
 
 
 //         });
 //     });
                            
-//     return (                     
+//     return (      
+//         <>             
 //         <SMap id='map-container' />
+//             {selectedPlace && obj.length && (
+//                 <InfoCard object={selectedPlace} />
+//             )}
+//             <RouteCard />
+//         </>  
 //     )
 
 // }
@@ -98,7 +124,7 @@
 // export default MyMap
     
 import React, { useEffect, useState, useContext } from "react"
-import { YMaps, Map, Placemark, Circle, RoutePanel } from '@pbe/react-yandex-maps'
+import { YMaps, Map, Placemark, Circle, Polyline } from '@pbe/react-yandex-maps'
 import vector from '@assets/Vector.png';
 import { useLocation } from "../../hooks/useLocation";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
@@ -149,7 +175,7 @@ const MyMap = () => {
     }
                            
     return (                     
-        <YMaps>
+        <YMaps >
             <Map
                 state={{
                     
@@ -164,7 +190,22 @@ const MyMap = () => {
                     },
                 }}
                 // @ts-expect-error TS(2322): Type '{ width: string; height: string; position: s... Remove this comment to see the full error message
-                    style={containerStyle} >
+                    style={containerStyle} 
+            >
+
+                {geoObjects.route.arrival[0] !== 0 && (
+                    <Polyline
+                        geometry={[
+                            userLocation,
+                            geoObjects.route.arrival
+                        ]}
+                        options={{
+                            strokeColor: "#000",
+                            strokeWidth: 4,
+                            strokeOpacity: 0.5,
+                        }}
+                    />
+                )}
 
                 {userLocation && (
                     <Placemark
