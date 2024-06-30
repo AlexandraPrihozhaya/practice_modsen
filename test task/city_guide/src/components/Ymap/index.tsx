@@ -194,17 +194,31 @@ const MyMap = () => {
             >
 
                 {geoObjects.route.arrival[0] !== 0 && (
-                    <Polyline
-                        geometry={[
-                            userLocation,
-                            geoObjects.route.arrival
-                        ]}
-                        options={{
-                            strokeColor: "#000",
-                            strokeWidth: 4,
-                            strokeOpacity: 0.5,
-                        }}
-                    />
+                    <>
+                        <Polyline
+                            geometry={[
+                                userLocation,
+                                ...geoObjects.route.wayPoints.map(wayPoint => wayPoint),
+                                geoObjects.route.arrival
+                            ]}
+                            options={{
+                                strokeColor: "#C75E5E",
+                                strokeWidth: 8
+                            }}
+                        />
+                        <Placemark
+                            geometry={userLocation}
+                            options={{
+                                iconLayout: 'default#image'
+                            }}
+                        />
+                        <Placemark
+                            geometry={geoObjects.route.arrival}
+                            options={{
+                                iconLayout: 'default#image'
+                            }}
+                        />
+                    </>
                 )}
 
                 {userLocation && (
@@ -257,7 +271,6 @@ const MyMap = () => {
             {selectedPlace && obj.length && (
                 <InfoCard object={selectedPlace} />
             )}
-            <RouteCard />
         </YMaps>
     )
 }
