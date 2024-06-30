@@ -6,7 +6,7 @@ export const SMap = styled.div`
     position: absolute;
 `;
 
-export const SMdClose = styled.button`
+export const SMdClose = styled.div`
     position: absolute;
     top: 10px;
     background: #fff;
