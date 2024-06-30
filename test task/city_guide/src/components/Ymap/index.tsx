@@ -131,6 +131,8 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useYMaps } from "@pbe/react-yandex-maps";
 import InfoCard from "../InfoCard";
 import RouteCard from "../RouteCard";
+import { SMdClose } from "./styled";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const containerStyle = {
     width: '100vw',
@@ -148,9 +150,14 @@ const MyMap = () => {
     const dispatch = useAppDispatch();
     const [obj, setObj] = useState([]);
     const [selectedPlace, setSelectedPlace] = useState(null);
+    const [isClicked, setClicked] = useState(false);
 
     const handlePlacemarkClick = (place) => {
         setSelectedPlace(place);
+    };
+
+    const handleIconClick = () => {
+        setClicked(!isClicked);
     };
 
     useEffect(() => {
@@ -269,7 +276,14 @@ const MyMap = () => {
             } 
             </Map>
             {selectedPlace && obj.length && (
-                <InfoCard object={selectedPlace} />
+                <>
+                    <SMdClose onClick={handleIconClick} isShow={isClicked}>
+                        {isClicked ? <IoIosArrowBack /> : <IoIosArrowForward />}
+                    </SMdClose>
+                    {!isClicked &&
+                    <InfoCard object={selectedPlace} />
+                    }
+            </>
             )}
         </YMaps>
     )
