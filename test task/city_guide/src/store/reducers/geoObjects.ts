@@ -64,6 +64,9 @@ export const geoObjectsSlice = createSlice({
         setRoute(state, action: PayloadAction<{ distance: number; duration: number; arrival: Array<number>; wayPoints: Array<Array<number>> }>) {
             state.route = action.payload;
         },
+        setLoading(state, action: PayloadAction<boolean>) {
+            state.isLoading = action.payload;
+        },
     },
 })
 
@@ -72,7 +75,8 @@ export const {
     setRadius,
     setSelectedCategories,
     setSearchAddress,
-    setRoute
+    setRoute,
+    setLoading
 } = geoObjectsSlice.actions;
 
 export default geoObjectsSlice.reducer;

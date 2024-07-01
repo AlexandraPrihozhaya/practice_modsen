@@ -11,7 +11,7 @@ import logo from '@assets/logo.png';
 import Card from '../Card';
 import FullCard from '../FullCard';
 import { useAppDispatch } from '../../hooks/redux';
-import { setRadius, setSearchAddress } from '../../store/reducers/geoObjects';
+import { setLoading, setRadius, setSearchAddress } from '../../store/reducers/geoObjects';
 import { FavoritesCollectionRef } from '../../firebase';
 import { getDocs } from "@firebase/firestore"
 
@@ -77,15 +77,7 @@ function SideBarMenu() {
   const [attractions, setAttractions] = useState([]);
 
   const handleBtnClick = async () => {
-  //   try {
-  //     let r = radius * 1000;
-  //     const response = await fetch(`https://search-maps.yandex.ru/v1/?text=архитектура&type=biz&lang=ru_RU&apikey=d2060b7e-ca8e-42ff-963a-3da7497a2f25&rspn=1&ll=${userLocation[1]},${userLocation[0]}&spn=${r / 6371*360*2},${r / 6371*360*2}&results=100`);
-  //     const data = await response.json();
-  //     setAttractions(data.features);
-    
-  // } catch (error) {
-  //     console.error("Error fetching attractions:", error);
-  // }
+    dispatch(setLoading(true));
   };
 
   return (

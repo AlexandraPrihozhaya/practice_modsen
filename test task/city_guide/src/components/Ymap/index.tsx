@@ -133,6 +133,7 @@ import InfoCard from "../InfoCard";
 import RouteCard from "../RouteCard";
 import { SMdClose } from "./styled";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { setLoading } from '../../store/reducers/geoObjects';
 
 const containerStyle = {
     width: '100vw',
@@ -161,16 +162,18 @@ const MyMap = () => {
     };
 
     useEffect(() => {
-        if (geoObjects.radius !== 0 && userLocation && geoObjects.selectedCategories)
+        if (geoObjects.radius !== 0 && userLocation && geoObjects.selectedCategories && geoObjects.isLoading) {
             getAttractions().then(attractions => setObj(attractions));
-    }, [geoObjects.radius, userLocation, geoObjects.selectedCategories]);
+            dispatch(setLoading(false));
+        }
+    }, [geoObjects.radius, userLocation, geoObjects.selectedCategories, geoObjects.isLoading]);
 
     const getAttractions = async () => {
         let arr = [];
         for (let i = 0; i < geoObjects.selectedCategories.length; i++) {
             try {
                 const radius = geoObjects.radius/111;
-                const response = await fetch(`https://search-maps.yandex.ru/v1/?text=${geoObjects.selectedCategories[i].text}&type=biz&lang=ru_RU&apikey=${API_KEY_2}&rspn=1&spn=${radius},${radius}&ll=${userLocation[1]},${userLocation[0]}&results=100`);
+                const response = await fetch(`https://search-maps.yandex.ru/v1/?text=${geoObjects.selectedCategories[i].text}&type=biz&lang=ru_RU&apikey=${API_KEY}&rspn=1&spn=${radius},${radius}&ll=${userLocation[1]},${userLocation[0]}&results=100`);
                 const data = await response.json();
                 arr.push({ attractions : data.features, category: geoObjects.selectedCategories[i] }); 
             } catch (error) {
