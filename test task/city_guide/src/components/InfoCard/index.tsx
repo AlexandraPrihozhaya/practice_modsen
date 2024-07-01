@@ -9,14 +9,13 @@ import { useLocation } from "../../hooks/useLocation";
 import { useAppDispatch } from '../../hooks/redux';
 import { setRoute } from '../../store/reducers/geoObjects';
 import RouteCard from '../RouteCard';
-import { MdClose } from 'react-icons/md';
+
 
 const InfoCard = ({object}) => {
 
     const {isAuth, email} = useAuth();
     const {userLocation, error} = useLocation();
     const dispatch = useAppDispatch();
-    const [showCard, setShowCard] = useState(true);
 
     const onRouteBtnClick = async () => {
         try {
@@ -33,14 +32,9 @@ const InfoCard = ({object}) => {
         }
     }
 
-    useEffect(() => {
-        if (object)
-        setShowCard(true);
-      }, [object]);
 
     return (
-        <>
-        
+        <> 
             <SCard>
                 {object.properties.CompanyMetaData.name && (
                     <STitle>{object.properties.CompanyMetaData.name}</STitle>
