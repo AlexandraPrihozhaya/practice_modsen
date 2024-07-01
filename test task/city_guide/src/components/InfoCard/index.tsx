@@ -9,7 +9,8 @@ import { useLocation } from "../../hooks/useLocation";
 import { useAppDispatch } from '../../hooks/redux';
 import { setRoute } from '../../store/reducers/geoObjects';
 import RouteCard from '../RouteCard';
-
+import { FavoritesCollectionRef } from '../../firebase';
+import { addDoc } from "@firebase/firestore"
 
 const InfoCard = ({object}) => {
 
@@ -32,6 +33,21 @@ const InfoCard = ({object}) => {
         }
     }
 
+    const addToFavorite = async () => {
+        createFavorite();
+    }
+
+    const createFavorite = async () => {
+        await addDoc(FavoritesCollectionRef, {
+            user_id: "567890fgh", 
+            geoobject_id: object.properties.CompanyMetaData.id, 
+            name: object.properties.CompanyMetaData.name ? object.properties.CompanyMetaData.name : null,
+            address: object.properties.CompanyMetaData.address ? object.properties.CompanyMetaData.address : null, 
+            hours: object.properties.CompanyMetaData.Hours ? object.properties.CompanyMetaData.Hours.text : null, 
+            phone: object.properties.CompanyMetaData.Phones ? object.properties.CompanyMetaData.Phones[0].formatted : null, 
+            url: object.properties.CompanyMetaData.url ? object.properties.CompanyMetaData.url : null
+        });
+    }
 
     return (
         <> 
@@ -57,7 +73,7 @@ const InfoCard = ({object}) => {
                     </>
                 )}
                 {isAuth && ( 
-                    <SButtonFav>
+                    <SButtonFav onClick={addToFavorite}>
                         <IoMdBookmark /> Добавить в избранное
                     </SButtonFav>
                 )}  

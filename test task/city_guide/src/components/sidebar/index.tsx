@@ -12,6 +12,8 @@ import Card from '../Card';
 import FullCard from '../FullCard';
 import { useAppDispatch } from '../../hooks/redux';
 import { setRadius, setSearchAddress } from '../../store/reducers/geoObjects';
+import { FavoritesCollectionRef } from '../../firebase';
+import { getDocs } from "@firebase/firestore"
 
 function SideBarMenu() {
   const [isSidebarOpenSearch, setIsSidebarOpenSearch] = useState(false);
@@ -20,7 +22,18 @@ function SideBarMenu() {
   const [radiusInput, setRadiusInput] = useState<number>(0);
   const [searchAddressInput, setSearchAddressInput] = useState<string>();
 
+  const [favorites, setFavorites] = useState([]);
+
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const getFavorites = async () => {
+      const data = await getDocs(FavoritesCollectionRef);
+      setFavorites(data.docs.map((elem) => ({...elem.data(), id: elem.id})));
+    }
+
+    getFavorites();
+  }, [])
 
   useEffect(() => {
     dispatch(setRadius(radiusInput));
@@ -126,7 +139,9 @@ function SideBarMenu() {
           </SSearch>
           <p className="text_search">Избранное:</p>
           <SCards>
-            <Card />
+            {favorites.map((item) => (
+              <Card key={item.id} object={item}/>
+            ))}
             <FullCard />
           </SCards>
         </div>

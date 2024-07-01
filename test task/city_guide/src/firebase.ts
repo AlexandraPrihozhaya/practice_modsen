@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getFirestore, collection } from "@firebase/firestore"
 
 const firebaseConfig = {
     apiKey: "AIzaSyAlLn3rTk6CFTgrBc37N2ENIdTrLIASqts",
@@ -10,3 +11,5 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+export const FavoritesCollectionRef = collection(db, "favorites");
