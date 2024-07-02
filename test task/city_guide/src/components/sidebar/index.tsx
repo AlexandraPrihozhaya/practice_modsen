@@ -11,34 +11,60 @@ import logo from '@assets/logo.png';
 import Card from '../Card';
 import FullCard from '../FullCard';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { setLoading, setRadius, setSearchAddress } from '../../store/reducers/geoObjects';
+import { setLoading, setRadius, setSearchAddress, setFavorites } from '../../store/reducers/geoObjects';
 import { FavoritesCollectionRef } from '../../firebase';
-import { getDocs } from "@firebase/firestore"
 import { useAuth } from "../../hooks/useAuth";
+import { query, where, getDocs, collection } from "firebase/firestore";
+import { Favorites } from '../../store/reducers/geoObjects';
 
 function SideBarMenu() {
   const [isSidebarOpenSearch, setIsSidebarOpenSearch] = useState(false);
   const [isSidebarOpenFav, setIsSidebarOpenFav] = useState(false);
   const [radiusInput, setRadiusInput] = useState<number>(0);
   const [searchAddressInput, setSearchAddressInput] = useState<string>();
-  const [favorites, setFavorites] = useState([]);
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.userReducer);
   const geoObjects = useAppSelector(state => state.geoObjectsReducer);
   const {isAuth, email} = useAuth();
 
+  // useEffect(() => {
+  //   if(isAuth) {
+  //     const getFavorites = async () => {
+  //       const data = await getDocs(FavoritesCollectionRef);
+  //       const filteredFavorites = data.docs.filter((elem) => elem.data().user_id === user.id).map((elem) => ({...elem.data(), id: elem.id}));
+  //       console.log(filteredFavorites)
+  //       setFavorites(filteredFavorites);
 
-  useEffect(() => {
-    if(isAuth) {
-      const getFavorites = async () => {
-        const data = await getDocs(FavoritesCollectionRef);
-        const filteredFavorites = data.docs.filter((elem) => elem.data().user_id === user.id).map((elem) => ({...elem.data(), id: elem.id}));
-        setFavorites(filteredFavorites);
-      }
- 
-      getFavorites();
+  //       getFavorites();
+  //     }
+  //   }
+  // }, [favorites, isAuth])
+  
+  const fetchFavorites  = async () => {
+    try {
+      const q = query(FavoritesCollectionRef, where("user_id", "==", user.id));
+      const data = await getDocs(q);
+      const favorites: Favorites[] = data.docs.map((elem) => ({
+        objectId: elem.data().geoobject_id, // Make sure these field names match your Firestore
+        name: elem.data().name, 
+        address: elem.data().address,
+        hours: elem.data().hours,
+        phone: elem.data().phone,
+        url: elem.data().url,
+        id: elem.id 
+      }));
+      dispatch(setFavorites(favorites));
+      console.log(geoObjects.favorites);
+    } catch (error) {
+      console.error("Error fetching favorites:", error);
     }
-  }, [favorites, isAuth])
+  };
+  
+    useEffect(() => {
+      if (isAuth) {
+        fetchFavorites();
+      }
+    }, [isAuth]);
 
   useEffect(() => {
     dispatch(setRadius(radiusInput));
@@ -139,8 +165,8 @@ function SideBarMenu() {
           <>
           <p className="text_search">Избранное:</p>
           <SCards>
-            {favorites.map((item) => (
-              <Card key={item.id} object={item}/>
+            {geoObjects.favorites.map((item) => (
+              <Card key={item.objectId} object={item}/>
             ))}
           </SCards>
           </>
