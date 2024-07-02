@@ -1,5 +1,5 @@
 import { Sidebar } from 'flowbite-react';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { IoMdArrowDropleft, IoMdBookmark } from "react-icons/io";
 import {
@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { setLoading, setRadius, setSearchAddress, setFavorites } from '../../store/reducers/geoObjects';
 import { FavoritesCollectionRef } from '../../firebase';
 import { useAuth } from "../../hooks/useAuth";
-import { query, where, getDocs, collection } from "firebase/firestore";
+import { query, where, getDocs } from "firebase/firestore";
 import { Favorites } from '../../store/reducers/geoObjects';
 
 function SideBarMenu() {
@@ -25,7 +25,7 @@ function SideBarMenu() {
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.userReducer);
   const geoObjects = useAppSelector(state => state.geoObjectsReducer);
-  const {isAuth, email} = useAuth();
+  const {isAuth} = useAuth();
 
   // useEffect(() => {
   //   if(isAuth) {

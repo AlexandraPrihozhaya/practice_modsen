@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 import {
   SAvatar, SButton
 } from "./styled";
@@ -10,7 +10,7 @@ import searchbtn from '@assets/searchbtn.png'
 
 const BtnAccount = () => {
 
-    const {isAuth, email} = useAuth();
+    const {isAuth} = useAuth();
     const dispatch = useAppDispatch();
 
     return (
@@ -33,4 +33,4 @@ const BtnAccount = () => {
     )
 };
 
-export default BtnAccount
+export default BtnAccount;

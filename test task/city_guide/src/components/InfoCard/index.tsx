@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
     SButtonFav, SButtonRoute, SCard, STitle, SText, SAddress, SName
 } from "./styled";
