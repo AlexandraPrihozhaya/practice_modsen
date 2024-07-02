@@ -6,7 +6,7 @@ import { IoMdBookmark } from "react-icons/io";
 import { FaLocationArrow } from "react-icons/fa";
 import { useAuth } from "../../hooks/useAuth";
 import { useLocation } from "../../hooks/useLocation";
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { setRoute } from '../../store/reducers/geoObjects';
 import RouteCard from '../RouteCard';
 import { FavoritesCollectionRef } from '../../firebase';
@@ -17,6 +17,7 @@ const InfoCard = ({object}) => {
     const {isAuth, email} = useAuth();
     const {userLocation, error} = useLocation();
     const dispatch = useAppDispatch();
+    const user = useAppSelector(state => state.userReducer);
 
     const onRouteBtnClick = async () => {
         try {
@@ -39,7 +40,7 @@ const InfoCard = ({object}) => {
 
     const createFavorite = async () => {
         await addDoc(FavoritesCollectionRef, {
-            user_id: "567890fgh", 
+            user_id: user.id, 
             geoobject_id: object.properties.CompanyMetaData.id, 
             name: object.properties.CompanyMetaData.name ? object.properties.CompanyMetaData.name : null,
             address: object.properties.CompanyMetaData.address ? object.properties.CompanyMetaData.address : null, 

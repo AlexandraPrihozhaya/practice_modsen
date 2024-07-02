@@ -10,30 +10,35 @@ import CategoryList from '../CategoryList';
 import logo from '@assets/logo.png';
 import Card from '../Card';
 import FullCard from '../FullCard';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { setLoading, setRadius, setSearchAddress } from '../../store/reducers/geoObjects';
 import { FavoritesCollectionRef } from '../../firebase';
 import { getDocs } from "@firebase/firestore"
+import { useAuth } from "../../hooks/useAuth";
 
 function SideBarMenu() {
   const [isSidebarOpenSearch, setIsSidebarOpenSearch] = useState(false);
   const [isSidebarOpenFav, setIsSidebarOpenFav] = useState(false);
-
   const [radiusInput, setRadiusInput] = useState<number>(0);
   const [searchAddressInput, setSearchAddressInput] = useState<string>();
-
   const [favorites, setFavorites] = useState([]);
-
   const dispatch = useAppDispatch();
+  const user = useAppSelector(state => state.userReducer);
+  const geoObjects = useAppSelector(state => state.geoObjectsReducer);
+  const {isAuth, email} = useAuth();
+
 
   useEffect(() => {
-    const getFavorites = async () => {
-      const data = await getDocs(FavoritesCollectionRef);
-      setFavorites(data.docs.map((elem) => ({...elem.data(), id: elem.id})));
+    if(isAuth) {
+      const getFavorites = async () => {
+        const data = await getDocs(FavoritesCollectionRef);
+        const filteredFavorites = data.docs.filter((elem) => elem.data().user_id === user.id).map((elem) => ({...elem.data(), id: elem.id}));
+        setFavorites(filteredFavorites);
+      }
+ 
+      getFavorites();
     }
-
-    getFavorites();
-  }, [])
+  }, [favorites, isAuth])
 
   useEffect(() => {
     dispatch(setRadius(radiusInput));
@@ -74,9 +79,7 @@ function SideBarMenu() {
     }
   };
 
-  const [attractions, setAttractions] = useState([]);
-
-  const handleBtnClick = async () => {
+  const handleBtnClick = () => {
     dispatch(setLoading(true));
   };
 
@@ -90,10 +93,12 @@ function SideBarMenu() {
           <SButtonSearch onClick={handleOpenSidebarSearch} isOpen={isSidebarOpenSearch}>
             <HiMiniMagnifyingGlass />
           </SButtonSearch>
-          
-          <SButtonFav className='icon_cont fav' onClick={handleOpenSidebarFav} isOpen={isSidebarOpenFav}>
-            <IoMdBookmark />
-          </SButtonFav>
+
+          {isAuth && (
+            <SButtonFav className='icon_cont fav' onClick={handleOpenSidebarFav} isOpen={isSidebarOpenFav}>
+              <IoMdBookmark />
+            </SButtonFav>
+          )}
         </div>
 
         <BtnAccount />
@@ -129,13 +134,18 @@ function SideBarMenu() {
             </SSearchIcon>
             <input type="text" placeholder="Место, адрес.." value={searchAddressInput} onChange={handleInputChange}/>
           </SSearch>
+
+        {!geoObjects.isShow ? (
+          <>
           <p className="text_search">Избранное:</p>
           <SCards>
             {favorites.map((item) => (
               <Card key={item.id} object={item}/>
             ))}
-            <FullCard />
           </SCards>
+          </>
+        ) : <FullCard /> }
+
         </div>
 
         <button className="btn_close" onClick={handleCloseSidebar}>
