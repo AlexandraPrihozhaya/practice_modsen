@@ -8,11 +8,6 @@ import { SMdClose } from "./styled";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { setLoading } from '../../store/reducers/geoObjects';
 
-const containerStyle = {
-    width: '100vw',
-    height: '100vh',
-    position: 'absolute'
-};
 
 const API_KEY = "d2060b7e-ca8e-42ff-963a-3da7497a2f25";
 const API_KEY_2 = "d6a05483-2ece-44c4-a5b8-5aa1031e577f"
@@ -60,20 +55,8 @@ const MyMap = () => {
     return (                     
         <YMaps >
             <Map
-                state={{
-                    
-                    center: userLocation,
-                    zoom: 16,
-                    // @ts-expect-error TS(2322): Type '{ center: any; zoom: number; on: { userLocat... Remove this comment to see the full error message
-                    on: {
-                        userLocationChange: (event) => {
-                            // @ts-expect-error TS(2532): Object is possibly 'undefined'
-                            this.setState({ center: event.value });
-                        },
-                    },
-                }}
-                // @ts-expect-error TS(2322): Type '{ width: string; height: string; position: s... Remove this comment to see the full error message
-                    style={containerStyle} 
+                state={{center: userLocation, zoom: 16}}
+                style={{width: '100vw', height: '100vh', position: 'absolute'}} 
             >
 
                 {geoObjects.route.arrival[0] !== 0 && (
