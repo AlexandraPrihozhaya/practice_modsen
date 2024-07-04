@@ -81,7 +81,7 @@ export const geoObjectsSlice = createSlice({
             state.isLoading = action.payload;
         },
         setShow(state, action: PayloadAction<boolean>) {
-            state.isLoading = action.payload;
+            state.isShow = action.payload;
         },
         setFavorites(state, action: PayloadAction<Array<Favorites>>) {
             state.favorites = action.payload;
