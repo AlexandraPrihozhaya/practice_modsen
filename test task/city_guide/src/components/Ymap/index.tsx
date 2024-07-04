@@ -1,53 +1,90 @@
-import React, { useEffect, useState, useContext } from "react"
-import { YMaps, Map, Placemark, Circle, RoutePanel } from '@pbe/react-yandex-maps'
+import React, { useEffect, useState } from "react"
+import { YMaps, Map, Placemark, Circle, Polyline } from '@pbe/react-yandex-maps'
 import vector from '@assets/Vector.png';
 import { useLocation } from "../../hooks/useLocation";
-import { useAuth } from "../../hooks/useAuth";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-
-const containerStyle = {
-    width: '100vw',
-    height: '100vh',
-    position: 'absolute'
-};
+import InfoCard from "../InfoCard";
+import { SMdClose } from "./styled";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { setLoading } from '../../store/reducers/geoObjects';
 
 const API_KEY = "d2060b7e-ca8e-42ff-963a-3da7497a2f25";
+const API_KEY_2 = "d6a05483-2ece-44c4-a5b8-5aa1031e577f"
 
 const MyMap = () => {
 
-    const [attractions, setAttractions] = useState([]);
-    
     const {userLocation, error} = useLocation();
     const geoObjects = useAppSelector(state => state.geoObjectsReducer);
     const dispatch = useAppDispatch();
+    const [obj, setObj] = useState([]);
+    const [selectedPlace, setSelectedPlace] = useState(null);
+    const [isClicked, setClicked] = useState(false);
 
-    useEffect(() => {
-        fetchAttractions();
-    }, [geoObjects.radius, userLocation, geoObjects.selectedCategories, geoObjects.searchAddress]);
-
-    const fetchAttractions = async () => {
-        const response = await fetch(`https://api.routing.yandex.net/v2/route?waypoints=25.234369457896325,55.280222457968712|25.234369457896325,55.401544758961258&mode=walking&apikey=96cda7f7-b384-479b-a403-7d6fbd8d95c2`);
-        const data = await response.json();
-        console.log(data)
+    const handlePlacemarkClick = (place) => {
+        setSelectedPlace(place);
     };
 
-    return (
-        <YMaps>
+    const handleIconClick = () => {
+        setClicked(!isClicked);
+    };
+
+    useEffect(() => {
+        if (geoObjects.radius !== 0 && userLocation && geoObjects.selectedCategories && geoObjects.isLoading) {
+            getAttractions().then(attractions => setObj(attractions));
+            dispatch(setLoading(false));
+        }
+    }, [geoObjects.radius, userLocation, geoObjects.selectedCategories, geoObjects.isLoading]);
+
+    const getAttractions = async () => {
+        let arr = [];
+        for (let i = 0; i < geoObjects.selectedCategories.length; i++) {
+            try {
+                const radius = geoObjects.radius/111;
+                const response = await fetch(`https://search-maps.yandex.ru/v1/?text=${geoObjects.selectedCategories[i].text}&type=biz&lang=ru_RU&apikey=${API_KEY}&rspn=1&spn=${radius},${radius}&ll=${userLocation[1]},${userLocation[0]}&results=100`);
+                const data = await response.json();
+                arr.push({ attractions : data.features, category: geoObjects.selectedCategories[i] }); 
+            } catch (error) {
+                console.error("Error fetching attractions:", error);
+            }
+        }
+
+        return arr;
+    }
+                           
+    return (                     
+        <YMaps >
             <Map
-                state={{
-                    
-                    center: userLocation,
-                    zoom: 16,
-                    // @ts-expect-error TS(2322): Type '{ center: any; zoom: number; on: { userLocat... Remove this comment to see the full error message
-                    on: {
-                        userLocationChange: (event) => {
-                            // @ts-expect-error TS(2532): Object is possibly 'undefined'
-                            this.setState({ center: event.value });
-                        },
-                    },
-                }}
-                // @ts-expect-error TS(2322): Type '{ width: string; height: string; position: s... Remove this comment to see the full error message
-                    style={containerStyle} >
+                state={{center: userLocation, zoom: 16}}
+                style={{width: '100vw', height: '100vh', position: 'absolute'}} 
+            >
+
+                {geoObjects.route.arrival[0] !== 0 && (
+                    <>
+                        <Polyline
+                            geometry={[
+                                userLocation,
+                                ...geoObjects.route.wayPoints.map(wayPoint => wayPoint),
+                                geoObjects.route.arrival
+                            ]}
+                            options={{
+                                strokeColor: "#C75E5E",
+                                strokeWidth: 8
+                            }}
+                        />
+                        <Placemark
+                            geometry={userLocation}
+                            options={{
+                                iconLayout: 'default#image'
+                            }}
+                        />
+                        <Placemark
+                            geometry={geoObjects.route.arrival}
+                            options={{
+                                iconLayout: 'default#image'
+                            }}
+                        />
+                    </>
+                )}
 
                 {userLocation && (
                     <Placemark
@@ -79,23 +116,35 @@ const MyMap = () => {
                         strokeWidth: 0
                     }}
                 />
-
-                {attractions.map((place) => (
-                    <Placemark
-                        key={place.id}
-                        geometry={[place.geometry.coordinates[1], place.geometry.coordinates[0]]} 
-                        options={{
-                        iconLayout: 'default#image',
-                        iconImageHref: 'https://pngicon.ru/file/uploads/vinni-pukh-v-png.png', 
-                        iconImageSize: [32, 24],
-                        }}
-                    />
-                ))}
-
-
+                
+                {obj.length !== 0 && geoObjects.radius && obj.map((place) => (
+                    place.attractions.map((attr) => (
+                        <Placemark
+                            key={attr.id}
+                            geometry={[attr.geometry.coordinates[1], attr.geometry.coordinates[0]]} 
+                            options={{
+                                iconLayout: 'default#image',
+                                iconImageHref: place.category.icon, 
+                                iconImageSize: [32, 32]
+                            }}
+                            onClick={() => handlePlacemarkClick(attr)}
+                        />
+                    ))
+                ))           
+            } 
             </Map>
+            {selectedPlace && obj.length && (
+                <>
+                    <SMdClose onClick={handleIconClick} isShow={isClicked}>
+                        {isClicked ? <IoIosArrowBack /> : <IoIosArrowForward />}
+                    </SMdClose>
+                    {!isClicked &&
+                        <InfoCard object={selectedPlace} />
+                    }
+                </>
+            )}
         </YMaps>
     )
 }
 
-export default MyMap
+export default MyMap;

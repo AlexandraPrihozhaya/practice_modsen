@@ -8,7 +8,6 @@ import { FaLocationDot } from "react-icons/fa6";
 
 const FullCard = () => {
 
-
   return (
     <SCard>
         <SCardContent>

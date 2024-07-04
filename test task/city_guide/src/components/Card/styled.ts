@@ -17,7 +17,7 @@ export const SDiv = styled.div`
 export const SCardMedia = styled(CardMedia)`
     border-radius: 10px;
     height: 80px;
-    width: 100px;
+    max-width: 100px;
     margin-right: 10px;
 `;
 

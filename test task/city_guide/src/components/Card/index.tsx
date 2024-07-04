@@ -4,11 +4,16 @@ import {
     SIconButtonFav, SIconButtonArrow, SCardActions, SCardContent
 } from "./styled";
 import { IoMdArrowDropright, IoMdBookmark } from "react-icons/io";
+import { useAppDispatch } from '../../hooks/redux';
+import { setShow } from '../../store/reducers/geoObjects';
 
-const Card = () => {
+
+const Card = ({object}) => {
+
+  const dispatch = useAppDispatch();
 
   const handleBtnClick = () => {
-    
+    dispatch(setShow(true));
   };
 
   return (
@@ -19,10 +24,14 @@ const Card = () => {
                     component="img"
                     image="https://masterpiecer-images.s3.yandex.net/c352b1b9801c11ee9607720ccb3e265f:upscaled"
                 />
-                <SCardHeader>Фантаcмагарический музей им. П.М. Машерова</SCardHeader>
+                <SCardHeader>{object.name && (object.name)}</SCardHeader>
             </SDiv>
-            <SText>Lörem ipsum jere. Intrabel peraktiv pävufåsk läslov pide. Exon prelogi. 
-                Någonstansare  begöpp. Homoadoption tesände keck såsom köttrymden. Epigen digon fast</SText>
+            {object.address && (
+              <SText>Адрес: {object.address}</SText>
+            )}
+            {object.hours && (
+              <SText>Время работы: {object.hours}</SText>
+            )}
       </SCardContent>
       <SCardActions>
         <SIconButtonFav aria-label="add to favorites">
