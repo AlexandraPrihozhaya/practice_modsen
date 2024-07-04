@@ -157,3 +157,12 @@
 .disabled {
   opacity: 0.5; 
 }
+
+.sidebarMobile {
+  background-color: #fff;
+  padding: 10px;
+  z-index: 2;
+  text-align: center;
+  box-shadow: 2px 0 1px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
