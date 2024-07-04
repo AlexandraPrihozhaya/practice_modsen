@@ -8,7 +8,6 @@ import { SMdClose } from "./styled";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { setLoading } from '../../store/reducers/geoObjects';
 
-
 const API_KEY = "d2060b7e-ca8e-42ff-963a-3da7497a2f25";
 const API_KEY_2 = "d6a05483-2ece-44c4-a5b8-5aa1031e577f"
 
